@@ -1,18 +1,12 @@
-/// Handles the navigation and display logic for different pages based on the URI.
-class PageHandler {
-  static String? page;
+import 'package:deep_linking_flutter/main.dart';
+import 'package:deep_linking_flutter/next_screen.dart';
+import 'package:flutter/material.dart';
 
-  static void handleUri(Uri? uri) {
-    if (uri == null || uri.queryParameters.isEmpty) return;
+navigateToScreenFromUri(Uri uri) {
+  String? path = uri.path;
 
-    final String pageFromUri = uri.queryParameters['page'] ?? '';
-
-    if (pageFromUri == 'green') {
-      page = "/green";
-    } else if (pageFromUri == 'red') {
-      page = "/red";
-    } else {
-      page = "/unknown";
-    }
-  }
+  if (path == "/nextScreen") {
+    Navigator.of(navigatorKey.currentState!.context)
+        .pushNamed(NextScreen.routeName);
+  } else {}
 }

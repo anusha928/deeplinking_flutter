@@ -1,7 +1,11 @@
 import 'dart:async';
-
+import 'package:deep_linking_flutter/page_handler.dart';
+import 'package:deep_linking_flutter/routes.dart';
+import 'package:deep_linking_flutter/next_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:uni_links/uni_links.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   runApp(const MyApp());
@@ -14,11 +18,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Deeplink Test',
+      navigatorKey: navigatorKey,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: const ReferPage(),
+      routes: Routes.routes,
     );
   }
 }
@@ -44,20 +50,14 @@ class _ReferPageState extends State<ReferPage> {
     // Terminate state
     final Uri? uri = await getInitialUri();
     if (uri != null) {
-      setReferralCodeFromUri(uri);
+      navigateToScreenFromUri(uri);
     }
 
     // Background state
     uriLinkStream.listen((Uri? uri) {
       if (uri != null) {
-        setReferralCodeFromUri(uri);
+        navigateToScreenFromUri(uri);
       }
-    });
-  }
-
-  setReferralCodeFromUri(Uri uri) {
-    setState(() {
-      refCode = uri.queryParameters["code"] ?? "";
     });
   }
 
@@ -71,10 +71,13 @@ class _ReferPageState extends State<ReferPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Text(
-        "Referral code = $refCode",
-        style: const TextStyle(fontSize: 32),
-      )),
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).pushNamed(NextScreen.routeName);
+          },
+          child: const Text("Next"),
+        ),
+      ),
     );
   }
 }

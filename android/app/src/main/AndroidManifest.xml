@@ -34,7 +34,7 @@
                <data 
                 android:scheme="https" 
                 android:host="deeplink-test-flutter.web.app"
-                android:pathPrefix="/refer/"
+                android:pathPrefix=""
                 />
                
             </intent-filter>
